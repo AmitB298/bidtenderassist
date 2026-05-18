@@ -1,26 +1,53 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #1a56db;
+  --primary-dark: #1e429f;
+  --accent: #f59e0b;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --success: #10b981;
+  --danger: #ef4444;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: "Segoe UI", sans-serif; }
+
+/* Responsive grid helpers */
+@media (max-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr !important; }
+  .grid-3 { grid-template-columns: 1fr !important; }
+  .hide-mobile { display: none !important; }
+  .full-mobile { width: 100% !important; flex: 1 1 100% !important; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Card grid responsive */
+@media (max-width: 640px) {
+  [style*="minmax(380px"] {
+    grid-template-columns: 1fr !important;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  [style*="minmax(300px"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="minmax(200px"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  [style*="minmax(150px"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  [style*="padding: 4rem"] {
+    padding: 2rem 1rem !important;
+  }
+  [style*="padding:\"4rem"] {
+    padding: 2rem 1rem !important;
+  }
+  [style*="font-size: clamp"] {
+    font-size: 1.8rem !important;
+  }
+  [style*="gridTemplateColumns:\"1fr 1fr\""] {
+    grid-template-columns: 1fr !important;
+  }
 }
