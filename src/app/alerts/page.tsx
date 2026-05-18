@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function AlertsPage() {
     }
   }
 
-  function toggle(arr, setArr, val) {
+  function toggle(arr: string[], setArr: (v: string[]) => void, val: string) {
     setArr(arr.includes(val) ? arr.filter(x=>x!==val) : [...arr, val]);
   }
 
