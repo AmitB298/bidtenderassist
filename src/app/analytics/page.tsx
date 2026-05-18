@@ -1,10 +1,10 @@
-﻿"use client";
+"use client";
 import Navbar from "@/components/Navbar";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Link from "next/link";
 import { mockTenders } from "@/lib/mockData";
 
-function BarChart({ data, color = "#1a56db", label }) {
+function BarChart({ data, color = "#1a56db", label }: { data: {name:string,value:number}[], color?: string, label: string }) {
   const max = Math.max(...data.map(d => d.value));
   return (
     <div>
@@ -25,7 +25,7 @@ function BarChart({ data, color = "#1a56db", label }) {
   );
 }
 
-function StatBox({ icon, label, value, sub, color }) {
+function StatBox({ icon, label, value, sub, color }: { icon:string, label:string, value:any, sub:string, color:string }) {
   return (
     <div style={{ background:"#fff", border:"1px solid #e2e8f0", borderRadius:"14px", padding:"1.5rem", boxShadow:"0 2px 8px rgba(0,0,0,0.05)", display:"flex", gap:"1rem", alignItems:"flex-start" }}>
       <div style={{ width:"48px", height:"48px", borderRadius:"12px", background:color+"15", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.4rem", flexShrink:0 }}>{icon}</div>

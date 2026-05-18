@@ -32,7 +32,7 @@ export default function AlertsPage() {
     setTimeout(() => setSaved(false), 3000);
   }
 
-  const chipStyle = (active) => ({
+  const chipStyle = (active: boolean) => ({
     padding:"6px 14px", borderRadius:"20px", fontSize:"0.82rem", fontWeight:600, cursor:"pointer", border:"1.5px solid",
     borderColor: active ? "#1a56db" : "#e2e8f0",
     background: active ? "#eff6ff" : "#fff",
