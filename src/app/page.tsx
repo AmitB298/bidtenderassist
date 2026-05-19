@@ -4,8 +4,9 @@ import Navbar from "@/components/Navbar";
 import TenderCard from "@/components/TenderCard";
 import TenderSkeleton from "@/components/TenderSkeleton";
 import MobileBottomNav from "@/components/MobileBottomNav";
-import { mockTenders, states, categories } from "@/lib/mockData";
+import { states, categories } from "@/lib/mockData";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 function useCountUp(target, duration, start) {
   const [count, setCount] = useState(0);
@@ -48,23 +49,36 @@ export default function HomePage() {
   const [category, setCategory] = useState("All Categories");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [allTenders, setAllTenders] = useState<any[]>([]);
 
-  useEffect(() => { setTimeout(() => setLoading(false), 1200); }, []);
+  useEffect(() => {
+    supabase
+      .from("tenders")
+      .select("*")
+      .eq("status", "active")
+      .order("deadline", { ascending: true })
+      .limit(500)
+      .then(({ data, error }) => {
+        if (data) setAllTenders(data);
+        if (error) console.error("Supabase error:", error);
+        setLoading(false);
+      });
+  }, []);
+
   useEffect(() => { setPage(1); }, [search, state, category]);
 
-  const filtered = useMemo(() => mockTenders.filter(t => {
-    const ms = t.title.toLowerCase().includes(search.toLowerCase()) || t.organization.toLowerCase().includes(search.toLowerCase());
+  const filtered = useMemo(() => allTenders.filter(t => {
+    const ms = t.title?.toLowerCase().includes(search.toLowerCase()) || t.organization?.toLowerCase().includes(search.toLowerCase());
     const mst = state === "All States" || t.state === state;
     const mc = category === "All Categories" || t.category === category;
     return ms && mst && mc;
-  }), [search, state, category]);
+  }), [search, state, category, allTenders]);
 
   const displayed = filtered.slice(0, page * PER_PAGE);
   const hasMore = displayed.length < filtered.length;
 
   function loadMore() {
-    setLoading(true);
-    setTimeout(() => { setPage(p=>p+1); setLoading(false); }, 700);
+    setPage(p => p + 1);
   }
 
   return (
@@ -106,16 +120,15 @@ export default function HomePage() {
         </div>
 
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"1rem" }}>
-          <h2 style={{ fontSize:"1rem", fontWeight:700, color:"var(--text,#0f172a)" }}>{filtered.length} Tenders Found</h2>
+          <h2 style={{ fontSize:"1rem", fontWeight:700, color:"var(--text,#0f172a)" }}>{loading ? "Loading..." : `${filtered.length} Tenders Found`}</h2>
           <span style={{ fontSize:"0.82rem", color:"#64748b" }}>Showing {displayed.length} of {filtered.length}</span>
         </div>
 
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(min(100%,380px),1fr))", gap:"1rem" }}>
-          {loading && page === 1
+          {loading
             ? Array(6).fill(0).map((_,i) => <TenderSkeleton key={i} />)
             : displayed.map(t => <TenderCard key={t.id} tender={t} />)
           }
-          {loading && page > 1 && Array(3).fill(0).map((_,i) => <TenderSkeleton key={"m"+i} />)}
         </div>
 
         {hasMore && !loading && (

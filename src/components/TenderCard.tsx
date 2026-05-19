@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -10,7 +10,7 @@ const categoryColors = {
 function formatCrore(val) {
   if (val >= 10000000) return "Rs." + (val/10000000).toFixed(2) + " Cr";
   if (val >= 100000) return "Rs." + (val/100000).toFixed(1) + " L";
-  return "Rs." + val.toLocaleString("en-IN");
+  return val ? "Rs." + val.toLocaleString("en-IN") : "N/A";
 }
 
 function daysLeft(deadline) {
