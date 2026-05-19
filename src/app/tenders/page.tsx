@@ -22,7 +22,7 @@ export default function TendersPage() {
 
   async function fetchTenders() {
     setLoading(true);
-    let query = supabase.from("tenders").select("*").eq("status","active").order("deadline", { ascending: true }).limit(50);
+    let query = supabase.from("tenders").select("*").eq("status","active").order("deadline", { ascending: true }).limit(200);
     if (state !== "All States") query = query.eq("state", state);
     if (category !== "All Categories") query = query.eq("category", category);
     if (search) query = query.ilike("title", "%" + search + "%");
